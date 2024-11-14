@@ -1,0 +1,66 @@
+version: "3"
+services:
+  peer_1:
+    image: peer
+    ports:
+      - "6001:6001"
+      - "7001:7001"
+    stdin_open: true
+    tty: true
+    environment:
+      conf: "docker_configs/config.ini"
+    networks:
+      custom_network:
+        ipv4_address: 172.20.0.2
+
+  peer_2:
+    image: peer
+    depends_on:
+      - peer_1
+    ports:
+      - "6002:6002"
+      - "7002:7002"
+    stdin_open: true
+    tty: true
+    environment:
+      conf: "docker_configs/config2.ini"
+    networks:
+      custom_network:
+        ipv4_address: 172.20.0.3
+
+  peer_3:
+    image: peer
+    depends_on:
+      - peer_2
+    ports:
+      - "6003:6003"
+      - "7003:7003"
+    stdin_open: true
+    tty: true
+    environment:
+      conf: "docker_configs/config3.ini"
+    networks:
+      custom_network:
+        ipv4_address: 172.20.0.4
+
+  peer_4:
+    image: peer
+    depends_on:
+      - peer_3
+    ports:
+      - "6004:6004"
+      - "7004:7004"
+    stdin_open: true
+    tty: true
+    environment:
+      conf: "docker_configs/config4.ini"
+    networks:
+      custom_network:
+        ipv4_address: 172.20.0.5
+
+networks:
+  custom_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
